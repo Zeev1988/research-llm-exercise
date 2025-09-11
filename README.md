@@ -37,17 +37,6 @@ Snippet format in the prompt
   - Header: `# <file_path>:<start>-<end> [<symbol_type>] <symbol_name>`
   - Then the exact code lines from disk.
 
-Example (simplified)
-```
-# signify/authenticode/cli.py:262-317 [function] main
-def main():
-    ...
-
-# signify/authenticode/signed_file/pe.py:428-450 [function] hash_pe_sections
-def hash_pe_sections(...):
-    ...
-```
-
 Usage
 1) Install deps
 ```bash
