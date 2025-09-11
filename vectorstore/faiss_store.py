@@ -41,3 +41,5 @@ class FaissWriter:
         with (out_dir / "metadata.jsonl").open("w", encoding="utf-8") as f:
             for m in self.metadata:
                 f.write(json.dumps(m, ensure_ascii=False) + "\n")
+
+
