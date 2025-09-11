@@ -20,6 +20,7 @@ def _end_lineno(node: ast.AST) -> int:
             max_line = max(max_line, ln)
     return max_line
 
+
 def _merge_ranges(ranges: List[Tuple[int, int]]) -> List[Tuple[int, int]]:
     if not ranges:
         return []
