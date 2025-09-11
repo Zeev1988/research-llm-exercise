@@ -20,7 +20,7 @@ def load_resources(index_dir: Path) -> Tuple[faiss.Index, List[Dict[str, Any]]]:
     return index, metadata
 
 
-def get_relevant_chunks(index: faiss.Index, metadata: List[Dict[str, Any]], query_vec: np.ndarray, k: int = 20):
+def get_relevant_chunks(index: faiss.Index, metadata: List[Dict[str, Any]], query_vec: np.ndarray, k: int = 8):
     D, I = index.search(query_vec.astype(np.float32), k)
     hits = []
     for score, idx in zip(D[0], I[0]):
