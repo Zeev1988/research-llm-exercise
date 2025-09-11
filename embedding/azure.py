@@ -77,12 +77,3 @@ class AzureChatClient(AzureClientBase):
     def chat(self, messages: List[dict]) -> str:
         resp = self.client.chat.completions.create(model=self.model_name, messages=messages)
         return resp.choices[0].message.content if resp.choices and resp.choices[0].message else ""
-
-
-def make_azure_clients() -> Tuple[AzureEmbeddingsClient, AzureChatClient]:
-    """Return both embeddings and chat clients sharing the same underlying AzureOpenAI client."""
-    chat = AzureChatClient()
-    emb = AzureEmbeddingsClient(client=chat.client)
-    return emb, chat
-
-
