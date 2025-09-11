@@ -1,0 +1,6 @@
+python-dotenv
+azure-identity
+openai
+faiss-cpu
+numpy
+rich
