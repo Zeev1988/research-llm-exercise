@@ -7,7 +7,7 @@ import faiss
 from dotenv import load_dotenv
 from azure.identity import get_bearer_token_provider, EnvironmentCredential
 from openai import AzureOpenAI
-from embedding import AzureEmbeddingsClient, AzureChatClient, make_azure_clients
+from embedding import AzureEmbeddingsClient, AzureChatClient
 
 
 def load_resources(index_dir: Path) -> Tuple[faiss.Index, List[Dict[str, Any]]]:
