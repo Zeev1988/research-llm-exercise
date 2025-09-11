@@ -4,10 +4,8 @@ from typing import List, Dict, Any, Tuple
 
 import numpy as np
 import faiss
-from dotenv import load_dotenv
-from azure.identity import get_bearer_token_provider, EnvironmentCredential
-from openai import AzureOpenAI
-from embedding import AzureEmbeddingsClient, AzureChatClient
+
+from embedding.azure import AzureChatClient, AzureEmbeddingsClient
 
 
 def load_resources(index_dir: Path) -> Tuple[faiss.Index, List[Dict[str, Any]]]:

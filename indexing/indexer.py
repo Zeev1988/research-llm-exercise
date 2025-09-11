@@ -1,12 +1,10 @@
-import json
-import time
 from pathlib import Path
-from typing import Any, Dict, Iterable, List, Optional
+from typing import Any, Dict, List
 
 from rich.console import Console
 
-from embedding import AzureEmbeddingsClient
-from vectorstore import FaissWriter
+from embedding.azure import AzureEmbeddingsClient
+from vectorstore.faiss_store import FaissWriter
 from .walker import get_python_files_from_repo
 from .chunker import chunk_python_file
 
