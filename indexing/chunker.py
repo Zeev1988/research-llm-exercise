@@ -7,20 +7,6 @@ from .models import CodeChunk
 
 MAX_LINES = 250
 
-
-def _end_lineno(node: ast.AST) -> int:
-    """Best-effort end line for an AST node."""
-    end = getattr(node, "end_lineno", None)
-    if end is not None:
-        return end
-    max_line = getattr(node, "lineno", 1)
-    for child in ast.walk(node):
-        ln = getattr(child, "lineno", None)
-        if ln is not None:
-            max_line = max(max_line, ln)
-    return max_line
-
-
 def _merge_ranges(ranges: List[Tuple[int, int]]) -> List[Tuple[int, int]]:
     if not ranges:
         return []
@@ -76,7 +62,7 @@ def _chunk_unknown_module_body(
     # 1. exclude imports, functions, classes
     for node in getattr(tree, "body", []):
         if isinstance(node, (ast.Import, ast.ImportFrom, ast.FunctionDef, ast.AsyncFunctionDef, ast.ClassDef)):
-            s, e = getattr(node, "lineno", 1), _end_lineno(node)
+            s, e = node.lineno, node.end_lineno
             covered.append((s, e))
 
     # 2. exclude header/docstring region if provided
@@ -126,18 +112,7 @@ def _leading_comments(text: str) -> Optional[str]:
     return out if out else None
 
 
-def _node_end_lineno(node: ast.AST) -> Optional[int]:
-    """Best-effort end line of an AST node (uses end_lineno if present)."""
-    end_ln = getattr(node, "end_lineno", None)
-    if isinstance(end_ln, int):
-        return end_ln
-    max_ln = getattr(node, "lineno", None)
-    for child in ast.walk(node):
-        ln = getattr(child, "lineno", None)
-        if isinstance(ln, int):
-            if max_ln is None or ln > max_ln:
-                max_ln = ln
-    return max_ln
+    
 
 
 def _extract_imports(tree: ast.AST) -> List[str]:
@@ -182,7 +157,7 @@ def chunk_python_file(path: Path) -> List[CodeChunk]:
                 symbol_name=Path(file_rel).stem,
                 symbol_type="module",
                 start_line=1,
-                end_line=min(max(1, file_text_preview.count("\n") + 1), len(text.splitlines())),
+                end_line=file_text_preview.count("\n") + 1,
                 text=file_text_preview,
                 docstring=module_doc,
                 imports=imports,
@@ -193,7 +168,7 @@ def chunk_python_file(path: Path) -> List[CodeChunk]:
     for node in tree.body:
         if isinstance(node, (ast.FunctionDef, ast.AsyncFunctionDef)):
             start = node.lineno
-            end = _node_end_lineno(node) or start
+            end = node.end_lineno
             node_text = "\n".join(text.splitlines()[start - 1 : end])
             doc = ast.get_docstring(node)
             chunks.append(
@@ -211,7 +186,7 @@ def chunk_python_file(path: Path) -> List[CodeChunk]:
             )
         elif isinstance(node, ast.ClassDef):
             c_start = node.lineno
-            c_end = _node_end_lineno(node) or c_start
+            c_end = node.end_lineno
             class_text = "\n".join(text.splitlines()[c_start - 1 : c_end])
             c_doc = ast.get_docstring(node)
             chunks.append(
@@ -230,5 +205,3 @@ def chunk_python_file(path: Path) -> List[CodeChunk]:
     header_end = file_text_preview.count("\n") + 1
     chunks.extend(_chunk_unknown_module_body(path, tree, text, imports, header_end))
     return chunks
-
-
