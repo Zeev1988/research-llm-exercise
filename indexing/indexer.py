@@ -40,7 +40,7 @@ def _prepare_chunk_text_for_embedding(chunk, max_chars: int = 4000) -> str:
     Includes a header with location and type, optional docstring, and body text.
     Truncates to max_chars to keep embedding requests efficient.
     """
-    header = f"[{chunk.symbol_type}] {chunk.symbol_name}:{chunk.start_line}-{chunk.end_line})"
+    header = f"[{chunk.symbol_type}] {chunk.symbol_name}:{chunk.start_line}-{chunk.end_line}"
     doc = chunk.docstring or ""
     body = chunk.text or ""
     combined = f"{header}\n\n{doc}\n\n{body}"
