@@ -1,7 +1,7 @@
 Reposetory QA Chatbot
 
-What I built (in short)
-- A small, modular system that answers questions about a local codebase using retrieval-augmented generation (RAG):
+What I built
+- A small, modular system that answers questions about a local codebase using RAG:
   - Index the repo (module/class/function chunks)
   - Embed chunks using ADA2
   - Retrieve relevant snippets for a question
