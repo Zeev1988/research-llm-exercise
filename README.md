@@ -1,4 +1,4 @@
-Reposetory QA Chatbot
+# Reposetory QA Chatbot
 
 What I built
 - A small, modular system that answers questions about a local codebase using RAG:
