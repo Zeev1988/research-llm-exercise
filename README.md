@@ -1,4 +1,4 @@
-research-llm-exercise
+Reposetory QA Chatbot
 
 What I built (in short)
 - A small, modular system that answers questions about a local codebase using retrieval-augmented generation (RAG):
@@ -12,6 +12,12 @@ Why these design choices
 - Embeddings + FAISS: Embeddings capture semantic similarity; FAISS gives fast nearest-neighbor search and scales to thousands of chunks with low latency.
 - Minimal, explicit prompts: I instruct the model to only use provided snippets and to always cite file:line ranges. This keeps answers grounded and auditable.
 - Local-first retrieval: I never send the whole repo. Only the top-k relevant snippets go to the model, which controls cost and improves focus.
+
+
+### Key tools used
+- **Azure OpenAI (embeddings + chat)**
+- **FAISS (vector store)**
+- **AST (code-aware chunking)**
 
 
 How it works (end-to-end)
